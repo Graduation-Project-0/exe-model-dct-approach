@@ -1,14 +1,8 @@
-"""
-Image Generation Utilities for Malware Detection
-Implements bigram extraction, byteplot generation, and DCT transformation
-as described in "Malware Detection Using Frequency Domain-Based Image Visualization and Deep Learning"
-"""
-
 import numpy as np
 from scipy.fft import dctn
 from typing import Tuple
 import math
-
+from scipy.ndimage import zoom
 
 def read_binary_file(file_path: str) -> bytes:
     """
@@ -48,7 +42,7 @@ def extract_bigrams(byte_data: bytes) -> np.ndarray:
 
 def create_bigram_image(bigram_freq: np.ndarray, zero_out_0000: bool = True) -> np.ndarray:
     """
-    Create a 256×256 sparse bigram frequency image.
+    Create a 256*256 sparse bigram frequency image.
     
     Args:
         bigram_freq: Array of 65536 bigram frequencies
@@ -161,8 +155,6 @@ def resize_image(image: np.ndarray, target_size: Tuple[int, int]) -> np.ndarray:
     Returns:
         Resized image
     """
-    from scipy.ndimage import zoom
-    
     h, w = image.shape
     target_h, target_w = target_size
     
@@ -194,8 +186,7 @@ def create_two_channel_image(file_path: str) -> np.ndarray:
     
     return two_channel_image
 
-
-    # Example usage
+# Example usage
 if __name__ == "__main__":
     exe_path = None
     

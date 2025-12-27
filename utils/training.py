@@ -1,8 +1,3 @@
-"""
-Training and Evaluation Functions for Malware Detection
-Includes training loops, metrics calculation, and visualization
-"""
-
 import torch
 import torch.nn as nn
 import torch.optim as optim

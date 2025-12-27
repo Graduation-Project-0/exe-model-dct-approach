@@ -17,15 +17,6 @@ class MalwareImageDataset(Dataset):
         self.mode = mode
         self.samples = []  # List of (file_path, label)
         
-        import sys
-        sys.path.append(
-            os.path.dirname(
-                os.path.dirname(
-                    os.path.abspath(__file__)
-                )
-            )
-        )
-
         from utils.image_generation import create_bigram_dct_image, create_two_channel_image
         
         self.create_bigram_dct_image = create_bigram_dct_image
