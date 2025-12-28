@@ -4,9 +4,8 @@ import argparse
 from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor
 import functools
-import cv2  # OpenCV for image saving
+import cv2 
 
-# Import generation functions
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -26,12 +25,10 @@ def process_file(file_info):
     src_path, output_class_dir, filename_base, formats = file_info
     
     try:
-        # Generate 2-channel image
         image = create_two_channel_image(src_path)
         
         status = "success"
         
-        # Save as .npy
         if 'npy' in formats:
             npy_path = os.path.join(output_class_dir, 'npy', filename_base + '.npy')
             if not os.path.exists(npy_path):
@@ -39,15 +36,12 @@ def process_file(file_info):
             else:
                 if len(formats) == 1: status = "skipped"
 
-        # Save as .png
         if 'png' in formats:
-            # Save Byteplot (Channel 0)
             byteplot_path = os.path.join(output_class_dir, 'byteplot', filename_base + '.png')
             if not os.path.exists(byteplot_path):
                 byteplot = (image[:, :, 0] * 255).astype(np.uint8)
                 cv2.imwrite(byteplot_path, byteplot)
             
-            # Save Bigram-DCT (Channel 1)
             dct_path = os.path.join(output_class_dir, 'dct', filename_base + '.png')
             if not os.path.exists(dct_path):
                 dct_img = image[:, :, 1]
@@ -57,14 +51,12 @@ def process_file(file_info):
                     dct_img = (dct_img * 255).astype(np.uint8)
                 cv2.imwrite(dct_path, dct_img)
 
-            # Save Raw Bigram (before DCT)
             bigram_path = os.path.join(output_class_dir, 'bigram', filename_base + '.png')
             if not os.path.exists(bigram_path):
                 byte_data = read_binary_file(src_path)
                 bigram_freq = extract_bigrams(byte_data)
                 bigram_img = create_bigram_image(bigram_freq, zero_out_0000=True)
                 
-                # Normalize for visualization
                 if bigram_img.max() > 0:
                     bigram_save = (bigram_img / bigram_img.max() * 255).astype(np.uint8)
                 else:
@@ -108,7 +100,6 @@ def main():
             print(f"Source directory {src_dir} does not exist.")
             continue
             
-        # Create subdirectories
         for sub in subdirs:
             os.makedirs(os.path.join(dst_dir, sub), exist_ok=True)
         

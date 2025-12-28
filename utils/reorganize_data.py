@@ -20,7 +20,6 @@ def move_files(source_patterns, target_dir, dry_run=False):
     errors = 0
     
     for pattern in source_patterns:
-        # recursive=True is needed for **
         files = glob.glob(pattern, recursive=True)
         
         for src_path in files:
@@ -59,7 +58,6 @@ def move_files(source_patterns, target_dir, dry_run=False):
 def cleanup_empty_dirs(paths):
     for path in paths:
         if os.path.exists(path) and os.path.isdir(path):
-            # Check if empty (ignoring .DS_Store or similar if needed, but strict empty is safer)
             if not os.listdir(path):
                 try:
                     os.rmdir(path)
@@ -67,7 +65,6 @@ def cleanup_empty_dirs(paths):
                 except OSError:
                     pass
             else:
-                 # Recursive cleanup could be added here if needed, but keeping it simple for now
                  pass
 
 def main():
